@@ -1,0 +1,42 @@
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  ADMIN
+  MENTOR
+  JUDGE
+  PARTICIPANT
+}
+
+model User {
+  id                 String   @id @default(cuid())
+  name               String
+  passwordHash       String
+  role               UserRole
+  isActive           Boolean  @default(true)
+  mustChangePassword Boolean  @default(false)
+  teamId             String?
+  team               Team?    @relation(fields: [teamId], references: [id], onDelete: SetNull)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@index([teamId])
+  @@index([role])
+}
+
+model Team {
+  id        String   @id @default(cuid())
+  name      String
+  code      String   @unique
+  users     User[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
