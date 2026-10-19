@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client"
   output   = "../generated/prisma"
@@ -8,35 +7,254 @@ datasource db {
   provider = "postgresql"
 }
 
+// ─────────────────────────────────────────────
+// Enums
+// ─────────────────────────────────────────────
+
 enum UserRole {
   ADMIN
   MENTOR
   JUDGE
-  PARTICIPANT
 }
+
+enum RoundType {
+  MENTORING
+  JUDGING
+}
+
+enum RoundStatus {
+  PENDING
+  ACTIVE
+  ENDED
+}
+
+// ─────────────────────────────────────────────
+// Staff Users (Admin, Mentor, Judge)
+// ─────────────────────────────────────────────
 
 model User {
   id                 String   @id @default(cuid())
-  name               String
+  username           String   @unique
   passwordHash       String
   role               UserRole
   isActive           Boolean  @default(true)
   mustChangePassword Boolean  @default(false)
-  teamId             String?
-  team               Team?    @relation(fields: [teamId], references: [id], onDelete: SetNull)
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
 
-  @@index([teamId])
+  panelMembers  PanelMember[]
+  evaluations   EvaluatorTeamEvaluation[]
+  refreshTokens RefreshToken[]
+
   @@index([role])
 }
 
+// ─────────────────────────────────────────────
+// Teams & Participants
+// ─────────────────────────────────────────────
+
 model Team {
-  id        String   @id @default(cuid())
-  name      String
-  code      String   @unique
-  users     User[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                 String   @id @default(cuid())
+  username           String   @unique
+  passwordHash       String
+  name               String
+  isTopTen           Boolean  @default(false)
+  isActive           Boolean  @default(true)
+  mustChangePassword Boolean  @default(true)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  participants  Participant[]
+  panelTeams    PanelTeam[]
+  evaluations   EvaluatorTeamEvaluation[]
+  submission    Submission?
+  refreshTokens RefreshToken[]
 }
 
+model Participant {
+  id        String   @id @default(cuid())
+  name      String
+  hotelNo   String?
+  roomName  String?
+  teamId    String
+  team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([teamId])
+}
+
+// ─────────────────────────────────────────────
+// Rounds, Panels, Assignments
+// ─────────────────────────────────────────────
+
+model Round {
+  id          String      @id @default(cuid())
+  name        String
+  type        RoundType
+  roundNumber Int
+  status      RoundStatus @default(PENDING)
+  startedAt   DateTime?
+  endedAt     DateTime?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  panels      Panel[]
+  criteria    EvaluationCriteria[]
+  evaluations EvaluatorTeamEvaluation[]
+}
+
+model Panel {
+  id        String   @id @default(cuid())
+  name      String
+  roundId   String
+  round     Round    @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  members PanelMember[]
+  teams   PanelTeam[]
+
+  @@index([roundId])
+}
+
+/// Links a staff user (Mentor/Judge) to a panel
+model PanelMember {
+  id        String   @id @default(cuid())
+  panelId   String
+  userId    String
+  panel     Panel    @relation(fields: [panelId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([panelId, userId])
+  @@index([userId])
+}
+
+/// Links a team to a panel (defines which teams a panel evaluates)
+model PanelTeam {
+  id        String   @id @default(cuid())
+  panelId   String
+  teamId    String
+  panel     Panel    @relation(fields: [panelId], references: [id], onDelete: Cascade)
+  team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([panelId, teamId])
+  @@index([teamId])
+}
+
+// ─────────────────────────────────────────────
+// Criteria & Scoring
+// ─────────────────────────────────────────────
+
+/// Scoring criteria defined per round by admin. Each has a max score.
+model EvaluationCriteria {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  maxScore    Float
+  roundId     String
+  round       Round    @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  scores Score[]
+
+  @@index([roundId])
+}
+
+/// One evaluation "session" per (evaluator, team, round).
+/// Holds the optional note and the confirmed flag.
+model EvaluatorTeamEvaluation {
+  id          String    @id @default(cuid())
+  evaluatorId String
+  teamId      String
+  roundId     String
+  note        String?   // ≤ 250 words, validated at app layer
+  isConfirmed Boolean   @default(false)
+  confirmedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  evaluator User    @relation(fields: [evaluatorId], references: [id], onDelete: Cascade)
+  team      Team    @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  round     Round   @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  scores    Score[]
+
+  @@unique([evaluatorId, teamId, roundId])
+  @@index([teamId, roundId])
+  @@index([evaluatorId, roundId])
+}
+
+/// Individual criterion score within an evaluation session
+model Score {
+  id           String                  @id @default(cuid())
+  value        Float
+  criterionId  String
+  evaluationId String
+  createdAt    DateTime                @default(now())
+  updatedAt    DateTime                @updatedAt
+
+  criterion  EvaluationCriteria      @relation(fields: [criterionId], references: [id], onDelete: Cascade)
+  evaluation EvaluatorTeamEvaluation @relation(fields: [evaluationId], references: [id], onDelete: Cascade)
+
+  @@unique([criterionId, evaluationId])
+  @@index([evaluationId])
+}
+
+// ─────────────────────────────────────────────
+// Team Submission
+// ─────────────────────────────────────────────
+
+model Submission {
+  id               String   @id @default(cuid())
+  teamId           String   @unique
+  problemStatement String?
+  solution         String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+}
+
+// ─────────────────────────────────────────────
+// App-wide Settings (singleton row)
+// ─────────────────────────────────────────────
+
+model AppSettings {
+  id               String   @id @default("singleton")
+  submissionLocked Boolean  @default(false)
+  updatedAt        DateTime @updatedAt
+}
+
+// ─────────────────────────────────────────────
+// Timeline
+// ─────────────────────────────────────────────
+
+model TimelineEvent {
+  id             String   @id @default(cuid())
+  title          String
+  description    String?
+  scheduledAt    DateTime
+  visibleToTeams Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+// ─────────────────────────────────────────────
+// Refresh Tokens
+// ─────────────────────────────────────────────
+
+/// Exactly one of userId or teamId will be set.
+model RefreshToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String?
+  teamId    String?
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+  team Team? @relation(fields: [teamId], references: [id], onDelete: Cascade)
+}

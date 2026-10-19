@@ -1,0 +1,1585 @@
+{
+  "info": {
+    "name": "Hackathon Evaluation Backend API",
+    "description": "Complete Postman collection for Hackathon Evaluation Backend. Includes automated token capture for Admin, Evaluator, and Team authentication.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "item": [
+        {
+          "name": "GET Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "health"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "01. Auth",
+      "item": [
+        {
+          "name": "Login - Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var res = pm.response.json();",
+                  "    if (res.data && res.data.accessToken) {",
+                  "        pm.environment.set('admin_token', res.data.accessToken);",
+                  "        pm.environment.set('refresh_token', res.data.refreshToken);",
+                  "        console.log('Saved admin_token and refresh_token');",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"adminpassword\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Login - Evaluator (Mentor/Judge)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var res = pm.response.json();",
+                  "    if (res.data && res.data.accessToken) {",
+                  "        pm.environment.set('evaluator_token', res.data.accessToken);",
+                  "        pm.environment.set('refresh_token', res.data.refreshToken);",
+                  "        console.log('Saved evaluator_token and refresh_token');",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"mentor_1\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Login - Team",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var res = pm.response.json();",
+                  "    if (res.data && res.data.accessToken) {",
+                  "        pm.environment.set('team_token', res.data.accessToken);",
+                  "        pm.environment.set('refresh_token', res.data.refreshToken);",
+                  "        console.log('Saved team_token and refresh_token');",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"team_alpha\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var res = pm.response.json();",
+                  "    if (res.data && res.data.accessToken) {",
+                  "        pm.environment.set('admin_token', res.data.accessToken);",
+                  "        pm.environment.set('refresh_token', res.data.refreshToken);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refresh_token}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/refresh",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "refresh"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refresh_token}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/logout",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "logout"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "02. Admin",
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{admin_token}}",
+            "type": "string"
+          }
+        ]
+      },
+      "item": [
+        {
+          "name": "Dashboard",
+          "item": [
+            {
+              "name": "GET Admin Dashboard",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/admin/dashboard",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "dashboard"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Users (Mentors & Judges)",
+          "item": [
+            {
+              "name": "GET List Users",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/admin/users?role=MENTOR",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "users"
+                  ],
+                  "query": [
+                    {
+                      "key": "role",
+                      "value": "MENTOR",
+                      "description": "Optional: MENTOR or JUDGE"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "POST Create User",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "if (pm.response.code === 201) {",
+                      "    var res = pm.response.json();",
+                      "    if (res.data && res.data.id) {",
+                      "        pm.environment.set('user_id', res.data.id);",
+                      "        console.log('Saved user_id: ' + res.data.id);",
+                      "    }",
+                      "}"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"mentor_1\",\n  \"password\": \"password123\",\n  \"role\": \"MENTOR\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/users",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "users"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "GET User by ID",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/admin/users/{{user_id}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "users",
+                    "{{user_id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "PATCH Update User",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"mentor_1_updated\",\n  \"isActive\": true\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/users/{{user_id}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "users",
+                    "{{user_id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "DELETE User",
+              "request": {
+                "method": "DELETE",
+                "url": {
+                  "raw": "{{baseUrl}}/admin/users/{{user_id}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "users",
+                    "{{user_id}}"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Teams & Participants",
+          "item": [
+            {
+              "name": "GET List Teams",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/admin/teams",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "teams"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "POST Create Team",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "if (pm.response.code === 201) {",
+                      "    var res = pm.response.json();",
+                      "    if (res.data && res.data.id) {",
+                      "        pm.environment.set('team_id', res.data.id);",
+                      "        if (res.data.participants && res.data.participants.length > 0) {",
+                      "            pm.environment.set('participant_id', res.data.participants[0].id);",
+                      "        }",
+                      "        console.log('Saved team_id and participant_id');",
+                      "    }",
+                      "}"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"team_alpha\",\n  \"password\": \"password123\",\n  \"name\": \"Team Alpha\",\n  \"participants\": [\n    {\n      \"name\": \"Alice Smith\",\n      \"hotelNo\": \"Hotel Grand\",\n      \"roomName\": \"Room 101\"\n    },\n    {\n      \"name\": \"Bob Jones\",\n      \"hotelNo\": \"Hotel Grand\",\n      \"roomName\": \"Room 102\"\n    }\n  ]\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/teams",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "teams"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "GET Team by ID",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/admin/teams/{{team_id}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "teams",
+                    "{{team_id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "PATCH Update Team",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Team Alpha (Renamed)\",\n  \"isActive\": true\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/teams/{{team_id}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "teams",
+                    "{{team_id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "PATCH Update Participant Details",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Alice Smith (Updated)\",\n  \"hotelNo\": \"Hotel Grand Palace\",\n  \"roomName\": \"Room 205\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/teams/{{team_id}}/participants/{{participant_id}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "teams",
+                    "{{team_id}}",
+                    "participants",
+                    "{{participant_id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "POST Set Top 10 Teams",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"teamIds\": [\n    \"{{team_id}}\"\n  ]\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/teams/top10",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "teams",
+                    "top10"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "DELETE Team",
+              "request": {
+                "method": "DELETE",
+                "url": {
+                  "raw": "{{baseUrl}}/admin/teams/{{team_id}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "teams",
+                    "{{team_id}}"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Rounds",
+          "item": [
+            {
+              "name": "GET List Rounds",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/admin/rounds",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "rounds"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "POST Create Round",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "if (pm.response.code === 201) {",
+                      "    var res = pm.response.json();",
+                      "    if (res.data && res.data.id) {",
+                      "        pm.environment.set('round_id', res.data.id);",
+                      "        console.log('Saved round_id: ' + res.data.id);",
+                      "    }",
+                      "}"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Round 1: Mentoring & Ideation\",\n  \"type\": \"MENTORING\",\n  \"roundNumber\": 1\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/rounds",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "rounds"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "GET Round by ID",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/admin/rounds/{{round_id}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "rounds",
+                    "{{round_id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "PATCH Start Round",
+              "request": {
+                "method": "PATCH",
+                "url": {
+                  "raw": "{{baseUrl}}/admin/rounds/{{round_id}}/start",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "rounds",
+                    "{{round_id}}",
+                    "start"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "PATCH End Round",
+              "request": {
+                "method": "PATCH",
+                "url": {
+                  "raw": "{{baseUrl}}/admin/rounds/{{round_id}}/end",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "rounds",
+                    "{{round_id}}",
+                    "end"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "DELETE Round",
+              "request": {
+                "method": "DELETE",
+                "url": {
+                  "raw": "{{baseUrl}}/admin/rounds/{{round_id}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "rounds",
+                    "{{round_id}}"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Evaluation Criteria",
+          "item": [
+            {
+              "name": "GET List Criteria for Round",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/admin/rounds/{{round_id}}/criteria",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "rounds",
+                    "{{round_id}}",
+                    "criteria"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "POST Create Criterion",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "if (pm.response.code === 201) {",
+                      "    var res = pm.response.json();",
+                      "    if (res.data && res.data.id) {",
+                      "        pm.environment.set('criteria_id', res.data.id);",
+                      "        console.log('Saved criteria_id: ' + res.data.id);",
+                      "    }",
+                      "}"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Technical Feasibility\",\n  \"description\": \"Architecture, execution feasibility, and technical depth\",\n  \"maxScore\": 25\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/rounds/{{round_id}}/criteria",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "rounds",
+                    "{{round_id}}",
+                    "criteria"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "PATCH Update Criterion",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Technical Feasibility & Architecture\",\n  \"maxScore\": 30\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/criteria/{{criteria_id}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "criteria",
+                    "{{criteria_id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "DELETE Criterion",
+              "request": {
+                "method": "DELETE",
+                "url": {
+                  "raw": "{{baseUrl}}/admin/criteria/{{criteria_id}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "criteria",
+                    "{{criteria_id}}"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Panels & Assignments",
+          "item": [
+            {
+              "name": "GET List Panels for Round",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/admin/rounds/{{round_id}}/panels",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "rounds",
+                    "{{round_id}}",
+                    "panels"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "POST Create Panel",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "if (pm.response.code === 201) {",
+                      "    var res = pm.response.json();",
+                      "    if (res.data && res.data.id) {",
+                      "        pm.environment.set('panel_id', res.data.id);",
+                      "        console.log('Saved panel_id: ' + res.data.id);",
+                      "    }",
+                      "}"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Panel A - AI Track\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/rounds/{{round_id}}/panels",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "rounds",
+                    "{{round_id}}",
+                    "panels"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "GET Panel by ID",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/admin/panels/{{panel_id}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "panels",
+                    "{{panel_id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "POST Add Evaluator Member to Panel",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"userId\": \"{{user_id}}\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/panels/{{panel_id}}/members",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "panels",
+                    "{{panel_id}}",
+                    "members"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "DELETE Remove Evaluator Member from Panel",
+              "request": {
+                "method": "DELETE",
+                "url": {
+                  "raw": "{{baseUrl}}/admin/panels/{{panel_id}}/members/{{user_id}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "panels",
+                    "{{panel_id}}",
+                    "members",
+                    "{{user_id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "POST Assign Teams to Panel",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"teamIds\": [\n    \"{{team_id}}\"\n  ]\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/panels/{{panel_id}}/teams",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "panels",
+                    "{{panel_id}}",
+                    "teams"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "DELETE Remove Team from Panel",
+              "request": {
+                "method": "DELETE",
+                "url": {
+                  "raw": "{{baseUrl}}/admin/panels/{{panel_id}}/teams/{{team_id}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "panels",
+                    "{{panel_id}}",
+                    "teams",
+                    "{{team_id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "DELETE Panel",
+              "request": {
+                "method": "DELETE",
+                "url": {
+                  "raw": "{{baseUrl}}/admin/panels/{{panel_id}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "panels",
+                    "{{panel_id}}"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Scores & Results",
+          "item": [
+            {
+              "name": "GET Round Evaluation Sessions",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/admin/rounds/{{round_id}}/scores",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "rounds",
+                    "{{round_id}}",
+                    "scores"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "PATCH Update Individual Score",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"value\": 22\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/scores/{{score_id}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "scores",
+                    "{{score_id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "PATCH Update Evaluation Note",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"note\": \"Admin note update: team addressed all feedback.\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/evaluations/{{evaluation_id}}/note",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "evaluations",
+                    "{{evaluation_id}}",
+                    "note"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "GET Round Results Summary & Standings",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/admin/rounds/{{round_id}}/results",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "rounds",
+                    "{{round_id}}",
+                    "results"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Submissions Management",
+          "item": [
+            {
+              "name": "GET List Submissions",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/admin/submissions",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "submissions"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "PATCH Set Submission Lock Status",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"locked\": false\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/submissions/lock",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "submissions",
+                    "lock"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Timeline Management",
+          "item": [
+            {
+              "name": "GET List Timeline Events",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/admin/timeline",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "timeline"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "POST Create Timeline Event",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "if (pm.response.code === 201) {",
+                      "    var res = pm.response.json();",
+                      "    if (res.data && res.data.id) {",
+                      "        pm.environment.set('timeline_id', res.data.id);",
+                      "        console.log('Saved timeline_id: ' + res.data.id);",
+                      "    }",
+                      "}"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Hackathon Kickoff & Keynote\",\n  \"description\": \"Welcome speech, introduction of themes, and guidelines announcement.\",\n  \"scheduledAt\": \"2026-10-25T09:00:00.000Z\",\n  \"visibleToTeams\": true\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/timeline",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "timeline"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "PATCH Update Timeline Event",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Hackathon Opening Ceremony & Keynote\",\n  \"visibleToTeams\": true\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/timeline/{{timeline_id}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "timeline",
+                    "{{timeline_id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "DELETE Timeline Event",
+              "request": {
+                "method": "DELETE",
+                "url": {
+                  "raw": "{{baseUrl}}/admin/timeline/{{timeline_id}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "timeline",
+                    "{{timeline_id}}"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "03. Evaluator (Mentor / Judge)",
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{evaluator_token}}",
+            "type": "string"
+          }
+        ]
+      },
+      "item": [
+        {
+          "name": "GET Evaluator Profile & Assigned Panels",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/evaluator/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "evaluator",
+                "me"
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET My Active Rounds",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/evaluator/rounds",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "evaluator",
+                "rounds"
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET My Teams for Round (Ordered Unscored First)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/evaluator/rounds/{{round_id}}/teams",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "evaluator",
+                "rounds",
+                "{{round_id}}",
+                "teams"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST Submit / Confirm Scores",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var res = pm.response.json();",
+                  "    if (res.data && res.data.id) {",
+                  "        pm.environment.set('evaluation_id', res.data.id);",
+                  "        if (res.data.scores && res.data.scores.length > 0) {",
+                  "            pm.environment.set('score_id', res.data.scores[0].id);",
+                  "        }",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"scores\": [\n    {\n      \"criterionId\": \"{{criteria_id}}\",\n      \"value\": 20\n    }\n  ],\n  \"note\": \"Impressive presentation and solid prototype.\",\n  \"confirm\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/evaluator/rounds/{{round_id}}/teams/{{team_id}}/scores",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "evaluator",
+                "rounds",
+                "{{round_id}}",
+                "teams",
+                "{{team_id}}",
+                "scores"
+              ]
+            }
+          }
+        },
+        {
+          "name": "PATCH Update Submitted Scores (Round & Team)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"scores\": [\n    {\n      \"criterionId\": \"{{criteria_id}}\",\n      \"value\": 22\n    }\n  ],\n  \"note\": \"Updated feedback after team Q&A.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/evaluator/rounds/{{round_id}}/teams/{{team_id}}/scores",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "evaluator",
+                "rounds",
+                "{{round_id}}",
+                "teams",
+                "{{team_id}}",
+                "scores"
+              ]
+            }
+          }
+        },
+        {
+          "name": "PATCH Update Single Score (By Score ID)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value\": 24\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/evaluator/scores/{{score_id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "evaluator",
+                "scores",
+                "{{score_id}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "04. Team",
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{team_token}}",
+            "type": "string"
+          }
+        ]
+      },
+      "item": [
+        {
+          "name": "GET Team Profile",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/team/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "team",
+                "me"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST Change Team Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentPassword\": \"password123\",\n  \"newPassword\": \"newpassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/team/auth/change-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "team",
+                "auth",
+                "change-password"
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Team Submission",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/team/submission",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "team",
+                "submission"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST Upsert Team Submission",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"problemStatement\": \"Traffic congestion and carbon emissions in dense metropolitan areas.\",\n  \"solution\": \"An intelligent traffic signal sync and green wave routing system using edge computing.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/team/submission",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "team",
+                "submission"
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Dorm / Room Assignments",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/team/dorms",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "team",
+                "dorms"
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Visible Timeline Events",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/team/timeline",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "team",
+                "timeline"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
