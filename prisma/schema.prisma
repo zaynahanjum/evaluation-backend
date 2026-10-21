@@ -212,6 +212,9 @@ model Submission {
   teamId           String   @unique
   problemStatement String?
   solution         String?
+  driveLink        String?
+  deploymentLink   String?
+  submittedAt      DateTime?
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 

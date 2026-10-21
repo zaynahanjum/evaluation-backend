@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { authenticate } from '../middleware/auth.middleware';
 import { requireTeam } from '../middleware/roles.middleware';
 import { validate } from '../middleware/validate.middleware';
-import { upsertSubmissionSchema } from '../models/zod/submission.schema';
+import { upsertSubmissionSchema, finalSubmissionSchema } from '../models/zod/submission.schema';
 import { changePasswordSchema } from '../models/zod/team.schema';
 
 import * as teamAuth from '../controllers/team/auth.controller';
@@ -22,6 +22,7 @@ router.post('/auth/change-password', validate(changePasswordSchema), teamAuth.ch
 // ─── Submission ──────────────────────────────────────────────────────────────
 router.get('/submission', submission.getSubmission);
 router.post('/submission', validate(upsertSubmissionSchema), submission.upsertSubmission);
+router.post('/submission/final', validate(finalSubmissionSchema), submission.finalSubmit);
 
 // ─── Dorms / Accommodation ───────────────────────────────────────────────────
 router.get('/dorms', dorms.getDorms);

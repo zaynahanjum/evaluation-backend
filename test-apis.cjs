@@ -283,8 +283,11 @@ async function runAll() {
         env['panel_id'] = 'seed-panel-1';
       }
 
-      // Check success
-      const isSuccess = res.statusCode >= 200 && res.statusCode < 400;
+      // Check success — some requests intentionally expect an error status
+      const expectError = fullName.includes('expect 403');
+      const isSuccess = expectError
+        ? res.statusCode === 403
+        : res.statusCode >= 200 && res.statusCode < 400;
       if (isSuccess) {
         passed++;
         console.log(`✅ [${res.statusCode}] ${method.padEnd(6)} ${fullName} (${duration}ms)`);

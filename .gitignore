@@ -51,3 +51,8 @@ Thumbs.db
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# Documentation artifacts & generation scripts
+api-usage-guide.html
+generate-api-pdf.cjs
+Hackathon_Evaluation_Backend_API_Usage_Guide.pdf

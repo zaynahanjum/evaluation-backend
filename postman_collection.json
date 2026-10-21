@@ -1140,7 +1140,7 @@
               }
             },
             {
-              "name": "PATCH Set Submission Lock Status",
+              "name": "PATCH Open Final Submissions",
               "request": {
                 "method": "PATCH",
                 "header": [
@@ -1548,6 +1548,33 @@
           }
         },
         {
+          "name": "POST Final Submission (Drive Link)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"driveLink\": \"https://drive.google.com/drive/folders/example-final-submission\",\n  \"deploymentLink\": \"https://my-project.vercel.app\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/team/submission/final",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "team",
+                "submission",
+                "final"
+              ]
+            }
+          }
+        },
+        {
           "name": "GET Dorm / Room Assignments",
           "request": {
             "method": "GET",
@@ -1575,6 +1602,73 @@
               "path": [
                 "team",
                 "timeline"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "05. Final Submission Close Test",
+      "item": [
+        {
+          "name": "PATCH Close Final Submissions (Admin)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"locked\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/submissions/lock",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "submissions",
+                "lock"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST Final Submission After Close (expect 403)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{team_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"driveLink\": \"https://drive.google.com/drive/folders/too-late\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/team/submission/final",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "team",
+                "submission",
+                "final"
               ]
             }
           }

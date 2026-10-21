@@ -20,6 +20,8 @@ export async function listSubmissions(req: Request, res: Response, next: NextFun
 }
 
 // PATCH /admin/submissions/lock
+// locked: true  => close submissions
+// locked: false => open submissions
 export async function setSubmissionLock(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
     const { locked } = req.body as SubmissionLockInput;
@@ -28,7 +30,7 @@ export async function setSubmissionLock(req: Request, res: Response, next: NextF
       create: { id: 'singleton', submissionLocked: locked, updatedAt: new Date() },
       update: { submissionLocked: locked, updatedAt: new Date() },
     });
-    res.json({ success: true, message: `Submissions are now ${locked ? 'locked' : 'unlocked'}.` });
+    res.json({ success: true, message: `Final submissions are now ${locked ? 'closed' : 'open'}.` });
   } catch (err) {
     next(err);
   }
