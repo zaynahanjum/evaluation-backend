@@ -82,6 +82,7 @@ router.get('/rounds/:roundId/results', results.getRoundResults);
 
 // ─── Submissions ─────────────────────────────────────────────────────────────
 router.get('/submissions', submissions.listSubmissions);
+router.get('/submissions/:teamId', submissions.getTeamSubmission);
 router.patch('/submissions/lock', validate(submissionLockSchema), submissions.setSubmissionLock);
 
 // ─── Timeline ────────────────────────────────────────────────────────────────

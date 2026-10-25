@@ -15,6 +15,7 @@ export async function getSubmission(req: Request, res: Response, next: NextFunct
         solution: true,
         driveLink: true,
         deploymentLink: true,
+        githubRepoLink: true,
         submittedAt: true,
         updatedAt: true,
       },
@@ -30,6 +31,7 @@ export async function getSubmission(req: Request, res: Response, next: NextFunct
     next(err);
   }
 }
+
 
 // POST /team/submission (create or update problemStatement/solution)
 export async function upsertSubmission(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -51,7 +53,7 @@ export async function upsertSubmission(req: Request, res: Response, next: NextFu
   }
 }
 
-// POST /team/submission/final (submit drive link + optional deployment link)
+// POST /team/submission/final (submit drive link + github repo link + optional deployment link)
 export async function finalSubmit(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
     const settings = await prisma.appSettings.findUnique({ where: { id: 'singleton' } });
@@ -59,17 +61,19 @@ export async function finalSubmit(req: Request, res: Response, next: NextFunctio
       next(new AppError(403, 'Final submissions are currently closed by admin.')); return;
     }
 
-    const { driveLink, deploymentLink } = req.body as FinalSubmissionInput;
+    const { driveLink, githubRepoLink, deploymentLink } = req.body as FinalSubmissionInput;
     const submission = await prisma.submission.upsert({
       where: { teamId: req.user!.id },
       create: {
         teamId: req.user!.id,
         driveLink,
+        githubRepoLink,
         deploymentLink: deploymentLink ?? null,
         submittedAt: new Date(),
       },
       update: {
         driveLink,
+        githubRepoLink,
         deploymentLink: deploymentLink ?? null,
         submittedAt: new Date(),
         updatedAt: new Date(),
@@ -80,3 +84,4 @@ export async function finalSubmit(req: Request, res: Response, next: NextFunctio
     next(err);
   }
 }
+

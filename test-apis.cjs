@@ -148,7 +148,7 @@ function runTestScript(scriptStr, statusCode, responseBody, requestName) {
         if (requestName.includes('Round') && !requestName.includes('Criteria') && !requestName.includes('Panels') && !requestName.includes('Score') && !requestName.includes('Evaluation')) {
           env['round_id'] = d.id;
         }
-        if (requestName.includes('Team') && !requestName.includes('Panels') && !requestName.includes('Participant') && !requestName.includes('Score') && !requestName.includes('Evaluation')) {
+        if (requestName.includes('Team') && !requestName.includes('Panels') && !requestName.includes('Participant') && !requestName.includes('Score') && !requestName.includes('Evaluation') && !requestName.includes('Submission')) {
           env['team_id'] = d.id;
         }
         if (requestName.includes('User') && !requestName.includes('Member')) {

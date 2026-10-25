@@ -59,7 +59,18 @@ export async function getTeam(req: Request, res: Response, next: NextFunction): 
       select: {
         id: true, name: true, username: true, isTopTen: true, isActive: true, createdAt: true,
         participants: { select: { id: true, name: true, hotelNo: true, roomName: true } },
-        submission: { select: { id: true, problemStatement: true, solution: true, updatedAt: true } },
+        submission: {
+          select: {
+            id: true,
+            problemStatement: true,
+            solution: true,
+            driveLink: true,
+            githubRepoLink: true,
+            deploymentLink: true,
+            submittedAt: true,
+            updatedAt: true,
+          },
+        },
         panelTeams: {
           select: {
             panel: {

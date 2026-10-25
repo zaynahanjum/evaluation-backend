@@ -214,6 +214,7 @@ model Submission {
   solution         String?
   driveLink        String?
   deploymentLink   String?
+  githubRepoLink   String?
   submittedAt      DateTime?
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt

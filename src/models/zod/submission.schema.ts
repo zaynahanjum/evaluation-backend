@@ -17,9 +17,10 @@ export const upsertSubmissionSchema = z.object({
     .optional(),
 });
 
-// Used for final submission (drive link + optional deployment link)
+// Used for final submission (drive link + github repo link (required) + optional deployment link)
 export const finalSubmissionSchema = z.object({
   driveLink: z.string().url({ message: 'driveLink must be a valid URL' }),
+  githubRepoLink: z.string().url({ message: 'githubRepoLink must be a valid URL' }),
   deploymentLink: z
     .string()
     .url({ message: 'deploymentLink must be a valid URL' })
@@ -33,3 +34,4 @@ export const submissionLockSchema = z.object({
 export type UpsertSubmissionInput = z.infer<typeof upsertSubmissionSchema>;
 export type FinalSubmissionInput = z.infer<typeof finalSubmissionSchema>;
 export type SubmissionLockInput = z.infer<typeof submissionLockSchema>;
+

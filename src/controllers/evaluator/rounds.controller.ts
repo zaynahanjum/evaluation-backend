@@ -12,8 +12,21 @@ export async function getMe(req: Request, res: Response, next: NextFunction): Pr
           include: {
             panel: {
               include: {
-                round: { select: { id: true, name: true, type: true, status: true } },
-                teams: { select: { team: { select: { id: true, name: true } } } },
+                round: {
+                  include: {
+                    criteria: { select: { id: true, name: true, description: true, maxScore: true } },
+                  },
+                },
+                teams: {
+                  select: {
+                    team: {
+                      select: {
+                        id: true, name: true,
+                        submission: { select: { problemStatement: true, solution: true } },
+                      },
+                    },
+                  },
+                },
               },
             },
           },
@@ -34,8 +47,21 @@ export async function getMyRounds(req: Request, res: Response, next: NextFunctio
       include: {
         panel: {
           include: {
-            round: true,
-            teams: { select: { team: { select: { id: true, name: true } } } },
+            round: {
+              include: {
+                criteria: { select: { id: true, name: true, description: true, maxScore: true } },
+              },
+            },
+            teams: {
+              select: {
+                team: {
+                  select: {
+                    id: true, name: true,
+                    submission: { select: { problemStatement: true, solution: true } },
+                  },
+                },
+              },
+            },
           },
         },
       },
@@ -49,9 +75,15 @@ export async function getMyRounds(req: Request, res: Response, next: NextFunctio
         roundName: pm.panel.round.name,
         roundType: pm.panel.round.type,
         roundNumber: pm.panel.round.roundNumber,
+        criteria: pm.panel.round.criteria,
         panelId: pm.panel.id,
         panelName: pm.panel.name,
-        teams: pm.panel.teams.map(pt => pt.team),
+        teams: pm.panel.teams.map(pt => ({
+          id: pt.team.id,
+          name: pt.team.name,
+          problemStatement: pt.team.submission?.problemStatement ?? null,
+          solution: pt.team.submission?.solution ?? null,
+        })),
       }));
 
     res.json({ success: true, data: activeRounds });

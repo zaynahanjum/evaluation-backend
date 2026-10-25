@@ -6,6 +6,7 @@ import { AppError } from '../../middleware/error.middleware';
  * GET /evaluator/rounds/:roundId/teams
  * Returns the teams assigned to this evaluator's panel in the given round,
  * annotated with scoring status (confirmed / not-confirmed / not-started).
+ * Also includes the round's evaluation criteria and each team's problem statement & solution.
  * Teams not yet scored are listed first (for the "red at the top" feature).
  */
 export async function getMyTeams(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -22,8 +23,22 @@ export async function getMyTeams(req: Request, res: Response, next: NextFunction
       include: {
         panel: {
           include: {
-            round: { select: { id: true, name: true, status: true } },
-            teams: { include: { team: { select: { id: true, name: true } } } },
+            round: {
+              include: {
+                criteria: { select: { id: true, name: true, description: true, maxScore: true } },
+              },
+            },
+            teams: {
+              include: {
+                team: {
+                  select: {
+                    id: true,
+                    name: true,
+                    submission: { select: { problemStatement: true, solution: true } },
+                  },
+                },
+              },
+            },
           },
         },
       },
@@ -31,8 +46,19 @@ export async function getMyTeams(req: Request, res: Response, next: NextFunction
       panel: {
         id: string;
         name: string;
-        round: { id: string; name: string; status: string };
-        teams: { team: { id: string; name: string } }[];
+        round: {
+          id: string;
+          name: string;
+          status: string;
+          criteria: { id: string; name: string; description: string | null; maxScore: number; weight: number }[];
+        };
+        teams: {
+          team: {
+            id: string;
+            name: string;
+            submission: { problemStatement: string | null; solution: string | null } | null;
+          };
+        }[];
       };
     }) | null;
 
@@ -64,16 +90,21 @@ export async function getMyTeams(req: Request, res: Response, next: NextFunction
         ? evaluation.isConfirmed ? 'confirmed' : 'in-progress'
         : 'not-started';
       return {
-        team: pt.team,
+        team: {
+          id: pt.team.id,
+          name: pt.team.name,
+          problemStatement: pt.team.submission?.problemStatement ?? null,
+          solution: pt.team.submission?.solution ?? null,
+        },
         evaluationStatus,
         evaluation: evaluation
           ? {
-              id: evaluation.id,
-              note: evaluation.note,
-              isConfirmed: evaluation.isConfirmed,
-              confirmedAt: evaluation.confirmedAt,
-              scores: (evaluation as typeof evaluation & { scores: unknown[] }).scores,
-            }
+            id: evaluation.id,
+            note: evaluation.note,
+            isConfirmed: evaluation.isConfirmed,
+            confirmedAt: evaluation.confirmedAt,
+            scores: (evaluation as typeof evaluation & { scores: unknown[] }).scores,
+          }
           : null,
       };
     });
@@ -85,7 +116,12 @@ export async function getMyTeams(req: Request, res: Response, next: NextFunction
     res.json({
       success: true,
       data: {
-        round: panelMembership.panel.round,
+        round: {
+          id: panelMembership.panel.round.id,
+          name: panelMembership.panel.round.name,
+          status: panelMembership.panel.round.status,
+          criteria: panelMembership.panel.round.criteria,
+        },
         panel: { id: panelMembership.panel.id, name: panelMembership.panel.name },
         teams,
       },

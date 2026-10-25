@@ -1,8 +1,10 @@
 import type { Request, Response, NextFunction } from 'express';
 import { prisma } from '../../services/prisma.service';
+import { AppError } from '../../middleware/error.middleware';
 import type { SubmissionLockInput } from '../../models/zod/submission.schema';
 
 // GET /admin/submissions
+// Returns all team submissions (all fields) + lock status
 export async function listSubmissions(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
     const submissions = await prisma.submission.findMany({
@@ -14,6 +16,24 @@ export async function listSubmissions(req: Request, res: Response, next: NextFun
       success: true,
       data: { submissionLocked: settings?.submissionLocked ?? false, submissions },
     });
+  } catch (err) {
+    next(err);
+  }
+}
+
+// GET /admin/submissions/:teamId
+// Returns the full submission for a specific team
+export async function getTeamSubmission(req: Request, res: Response, next: NextFunction): Promise<void> {
+  try {
+    const teamId = req.params['teamId'] as string;
+    const submission = await prisma.submission.findUnique({
+      where: { teamId },
+      include: { team: { select: { id: true, name: true } } },
+    });
+    if (!submission) {
+      next(new AppError(404, 'No submission found for this team.')); return;
+    }
+    res.json({ success: true, data: submission });
   } catch (err) {
     next(err);
   }

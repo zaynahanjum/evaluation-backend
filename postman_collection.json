@@ -1140,6 +1140,23 @@
               }
             },
             {
+              "name": "GET Team Submission",
+              "request": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/admin/submissions/{{team_id}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "submissions",
+                    "{{team_id}}"
+                  ]
+                }
+              }
+            },
+            {
               "name": "PATCH Open Final Submissions",
               "request": {
                 "method": "PATCH",
@@ -1548,7 +1565,7 @@
           }
         },
         {
-          "name": "POST Final Submission (Drive Link)",
+          "name": "POST Final Submission (Drive + GitHub + Deployment Link)",
           "request": {
             "method": "POST",
             "header": [
@@ -1559,7 +1576,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"driveLink\": \"https://drive.google.com/drive/folders/example-final-submission\",\n  \"deploymentLink\": \"https://my-project.vercel.app\"\n}"
+              "raw": "{\n  \"driveLink\": \"https://drive.google.com/drive/folders/example-final-submission\",\n  \"githubRepoLink\": \"https://github.com/example-team/hackathon-project\",\n  \"deploymentLink\": \"https://my-project.vercel.app\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/team/submission/final",
@@ -1658,7 +1675,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"driveLink\": \"https://drive.google.com/drive/folders/too-late\"\n}"
+              "raw": "{\n  \"driveLink\": \"https://drive.google.com/drive/folders/too-late\",\n  \"githubRepoLink\": \"https://github.com/example-team/too-late\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/team/submission/final",
