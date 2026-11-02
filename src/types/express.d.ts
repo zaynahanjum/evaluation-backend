@@ -15,4 +15,14 @@ declare global {
   }
 }
 
+declare module 'express-serve-static-core' {
+  interface Request {
+    user?: {
+      id: string;
+      role: 'ADMIN' | 'MENTOR' | 'JUDGE' | 'TEAM';
+      type: 'staff' | 'team';
+    };
+  }
+}
+
 export {};
