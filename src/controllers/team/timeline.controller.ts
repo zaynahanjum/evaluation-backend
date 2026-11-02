@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
-import { prisma } from '../../services/prisma.service';
+import { prisma } from '../../services/prisma.service.js';
 
 // GET /team/timeline
 // Returns only events marked visibleToTeams = true, sorted chronologically

@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
-import { prisma } from '../../services/prisma.service';
-import { AppError } from '../../middleware/error.middleware';
-import type { CreateRoundInput } from '../../models/zod/round.schema';
+import { prisma } from '../../services/prisma.service.js';
+import { AppError } from '../../middleware/error.middleware.js';
+import type { CreateRoundInput } from '../../models/zod/round.schema.js';
 
 // GET /admin/rounds
 export async function listRounds(req: Request, res: Response, next: NextFunction): Promise<void> {

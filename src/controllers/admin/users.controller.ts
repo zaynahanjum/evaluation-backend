@@ -1,8 +1,8 @@
 import type { Request, Response, NextFunction } from 'express';
-import { prisma } from '../../services/prisma.service';
-import { hashPassword } from '../../services/auth.service';
-import { AppError } from '../../middleware/error.middleware';
-import type { CreateUserInput, UpdateUserInput } from '../../models/zod/user.schema';
+import { prisma } from '../../services/prisma.service.js';
+import { hashPassword } from '../../services/auth.service.js';
+import { AppError } from '../../middleware/error.middleware.js';
+import type { CreateUserInput, UpdateUserInput } from '../../models/zod/user.schema.js';
 
 // GET /admin/users
 export async function listUsers(req: Request, res: Response, next: NextFunction): Promise<void> {

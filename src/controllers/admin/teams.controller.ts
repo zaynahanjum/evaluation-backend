@@ -1,8 +1,8 @@
 import type { Request, Response, NextFunction } from 'express';
-import { prisma } from '../../services/prisma.service';
-import { hashPassword } from '../../services/auth.service';
-import { AppError } from '../../middleware/error.middleware';
-import type { CreateTeamInput, UpdateTeamInput, SetTopTeamsInput } from '../../models/zod/team.schema';
+import { prisma } from '../../services/prisma.service.js';
+import { hashPassword } from '../../services/auth.service.js';
+import { AppError } from '../../middleware/error.middleware.js';
+import type { CreateTeamInput, UpdateTeamInput, SetTopTeamsInput } from '../../models/zod/team.schema.js';
 
 // GET /admin/teams
 export async function listTeams(req: Request, res: Response, next: NextFunction): Promise<void> {

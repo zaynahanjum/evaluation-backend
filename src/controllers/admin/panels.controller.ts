@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
-import { prisma } from '../../services/prisma.service';
-import { AppError } from '../../middleware/error.middleware';
-import type { CreatePanelInput, AddPanelMemberInput, AddPanelTeamsInput } from '../../models/zod/panel.schema';
+import { prisma } from '../../services/prisma.service.js';
+import { AppError } from '../../middleware/error.middleware.js';
+import type { CreatePanelInput, AddPanelMemberInput, AddPanelTeamsInput } from '../../models/zod/panel.schema.js';
 
 // GET /admin/rounds/:roundId/panels
 export async function listPanels(req: Request, res: Response, next: NextFunction): Promise<void> {

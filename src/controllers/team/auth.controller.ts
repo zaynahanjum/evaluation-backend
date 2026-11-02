@@ -1,9 +1,9 @@
 /// <reference path="../../types/express.d.ts" />
 import type { Request, Response, NextFunction } from 'express';
-import { prisma } from '../../services/prisma.service';
-import { verifyPassword, hashPassword } from '../../services/auth.service';
-import { AppError } from '../../middleware/error.middleware';
-import type { ChangePasswordInput } from '../../models/zod/team.schema';
+import { prisma } from '../../services/prisma.service.js';
+import { verifyPassword, hashPassword } from '../../services/auth.service.js';
+import { AppError } from '../../middleware/error.middleware.js';
+import type { ChangePasswordInput } from '../../models/zod/team.schema.js';
 
 // GET /team/me
 export async function getMe(req: Request, res: Response, next: NextFunction): Promise<void> {

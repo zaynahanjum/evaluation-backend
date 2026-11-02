@@ -1,14 +1,14 @@
 import { Router } from 'express';
-import { authenticate } from '../middleware/auth.middleware';
-import { requireTeam } from '../middleware/roles.middleware';
-import { validate } from '../middleware/validate.middleware';
-import { upsertSubmissionSchema, finalSubmissionSchema } from '../models/zod/submission.schema';
-import { changePasswordSchema } from '../models/zod/team.schema';
+import { authenticate } from '../middleware/auth.middleware.js';
+import { requireTeam } from '../middleware/roles.middleware.js';
+import { validate } from '../middleware/validate.middleware.js';
+import { upsertSubmissionSchema, finalSubmissionSchema } from '../models/zod/submission.schema.js';
+import { changePasswordSchema } from '../models/zod/team.schema.js';
 
-import * as teamAuth from '../controllers/team/auth.controller';
-import * as submission from '../controllers/team/submission.controller';
-import * as dorms from '../controllers/team/dorms.controller';
-import * as timeline from '../controllers/team/timeline.controller';
+import * as teamAuth from '../controllers/team/auth.controller.js';
+import * as submission from '../controllers/team/submission.controller.js';
+import * as dorms from '../controllers/team/dorms.controller.js';
+import * as timeline from '../controllers/team/timeline.controller.js';
 
 const router = Router();
 

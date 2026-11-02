@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
-import { prisma } from '../services/prisma.service';
+import { prisma } from '../services/prisma.service.js';
 import {
   verifyPassword,
   hashPassword,
@@ -8,9 +8,9 @@ import {
   verifyRefreshToken,
   refreshTokenExpiryDate,
   type TokenPayload,
-} from '../services/auth.service';
-import { AppError } from '../middleware/error.middleware';
-import type { LoginInput, RefreshInput } from '../models/zod/auth.schema';
+} from '../services/auth.service.js';
+import { AppError } from '../middleware/error.middleware.js';
+import type { LoginInput, RefreshInput } from '../models/zod/auth.schema.js';
 
 // ─── POST /auth/login ────────────────────────────────────────────────────────
 

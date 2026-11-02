@@ -4,12 +4,12 @@ import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
 
-import authRoutes from './routes/auth.routes';
-import adminRoutes from './routes/admin.routes';
-import evaluatorRoutes from './routes/evaluator.routes';
-import teamRoutes from './routes/team.routes';
+import authRoutes from './routes/auth.routes.js';
+import adminRoutes from './routes/admin.routes.js';
+import evaluatorRoutes from './routes/evaluator.routes.js';
+import teamRoutes from './routes/team.routes.js';
 
-import { errorMiddleware, notFoundMiddleware } from './middleware/error.middleware';
+import { errorMiddleware, notFoundMiddleware } from './middleware/error.middleware.js';
 
 const app = express();
 

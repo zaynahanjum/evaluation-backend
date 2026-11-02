@@ -1,7 +1,7 @@
 /// <reference path="../../types/express.d.ts" />
 import type { Request, Response, NextFunction } from 'express';
-import { prisma } from '../../services/prisma.service';
-import { AppError } from '../../middleware/error.middleware';
+import { prisma } from '../../services/prisma.service.js';
+import { AppError } from '../../middleware/error.middleware.js';
 
 /**
  * GET /evaluator/rounds/:roundId/teams

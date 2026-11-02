@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
-import { prisma } from '../../services/prisma.service';
-import { AppError } from '../../middleware/error.middleware';
-import type { AdminUpdateScoreInput } from '../../models/zod/score.schema';
+import { prisma } from '../../services/prisma.service.js';
+import { AppError } from '../../middleware/error.middleware.js';
+import type { AdminUpdateScoreInput } from '../../models/zod/score.schema.js';
 
 // GET /admin/rounds/:roundId/scores
 // Returns all evaluation sessions (confirmed + unconfirmed) for a round

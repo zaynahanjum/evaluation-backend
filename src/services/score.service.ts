@@ -1,4 +1,4 @@
-import { prisma } from './prisma.service';
+import { prisma } from './prisma.service.js';
 
 export interface CriterionResult {
   criterionId: string;

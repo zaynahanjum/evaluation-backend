@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
-import { calculateRoundResults } from '../../services/score.service';
-import { AppError } from '../../middleware/error.middleware';
-import { prisma } from '../../services/prisma.service';
+import { calculateRoundResults } from '../../services/score.service.js';
+import { AppError } from '../../middleware/error.middleware.js';
+import { prisma } from '../../services/prisma.service.js';
 
 // GET /admin/rounds/:roundId/results
 // Returns computed avg + total per team for the round

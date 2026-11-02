@@ -1,16 +1,16 @@
 import { Router } from 'express';
-import { authenticate } from '../middleware/auth.middleware';
-import { requireEvaluator } from '../middleware/roles.middleware';
-import { validate } from '../middleware/validate.middleware';
+import { authenticate } from '../middleware/auth.middleware.js';
+import { requireEvaluator } from '../middleware/roles.middleware.js';
+import { validate } from '../middleware/validate.middleware.js';
 import {
   submitScoresSchema,
   patchScoresSchema,
   evaluatorUpdateScoreSchema,
-} from '../models/zod/score.schema';
+} from '../models/zod/score.schema.js';
 
-import * as rounds from '../controllers/evaluator/rounds.controller';
-import * as teams from '../controllers/evaluator/teams.controller';
-import * as scores from '../controllers/evaluator/scores.controller';
+import * as rounds from '../controllers/evaluator/rounds.controller.js';
+import * as teams from '../controllers/evaluator/teams.controller.js';
+import * as scores from '../controllers/evaluator/scores.controller.js';
 
 const router = Router();
 

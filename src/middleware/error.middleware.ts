@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
-import { Prisma } from '../services/prisma.service';
+import { Prisma } from '../services/prisma.service.js';
 
 // ─── Custom Error Class ──────────────────────────────────────────────────────
 

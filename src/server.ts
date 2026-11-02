@@ -1,6 +1,6 @@
 import 'dotenv/config';
-import app from './app';
-import { ensureAppSettings } from './services/prisma.service';
+import app from './app.js';
+import { ensureAppSettings } from './services/prisma.service.js';
 
 const PORT = parseInt(process.env['PORT'] ?? '4000', 10);
 

@@ -1,12 +1,12 @@
 /// <reference path="../../types/express.d.ts" />
 import type { Request, Response, NextFunction } from 'express';
-import { prisma } from '../../services/prisma.service';
-import { AppError } from '../../middleware/error.middleware';
+import { prisma } from '../../services/prisma.service.js';
+import { AppError } from '../../middleware/error.middleware.js';
 import type {
   SubmitScoresInput,
   PatchScoresInput,
   EvaluatorUpdateScoreInput,
-} from '../../models/zod/score.schema';
+} from '../../models/zod/score.schema.js';
 
 /**
  * POST /evaluator/rounds/:roundId/teams/:teamId/scores

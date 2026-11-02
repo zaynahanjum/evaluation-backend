@@ -1,7 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
-import { prisma } from '../../services/prisma.service';
-import { AppError } from '../../middleware/error.middleware';
-import type { CreateTimelineInput, UpdateTimelineInput } from '../../models/zod/timeline.schema';
+import { prisma } from '../../services/prisma.service.js';
+import type { CreateTimelineInput, UpdateTimelineInput } from '../../models/zod/timeline.schema.js';
 
 // GET /admin/timeline
 export async function listTimeline(req: Request, res: Response, next: NextFunction): Promise<void> {

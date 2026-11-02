@@ -1,6 +1,6 @@
 /// <reference path="../../types/express.d.ts" />
 import type { Request, Response, NextFunction } from 'express';
-import { prisma } from '../../services/prisma.service';
+import { prisma } from '../../services/prisma.service.js';
 
 // GET /evaluator/me
 export async function getMe(req: Request, res: Response, next: NextFunction): Promise<void> {

@@ -1,7 +1,7 @@
 /// <reference path="../types/express.d.ts" />
 import type { Request, Response, NextFunction } from 'express';
-import { verifyAccessToken } from '../services/auth.service';
-import { AppError } from './error.middleware';
+import { verifyAccessToken } from '../services/auth.service.js';
+import { AppError } from './error.middleware.js';
 
 /**
  * Verifies the Bearer access token from the Authorization header

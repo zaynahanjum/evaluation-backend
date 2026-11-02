@@ -1,28 +1,28 @@
 import { Router } from 'express';
-import { authenticate } from '../middleware/auth.middleware';
-import { requireAdmin } from '../middleware/roles.middleware';
-import { validate } from '../middleware/validate.middleware';
+import { authenticate } from '../middleware/auth.middleware.js';
+import { requireAdmin } from '../middleware/roles.middleware.js';
+import { validate } from '../middleware/validate.middleware.js';
 
 // Schemas
-import { createUserSchema, updateUserSchema } from '../models/zod/user.schema';
-import { createTeamSchema, updateTeamSchema, setTopTeamsSchema, updateParticipantSchema } from '../models/zod/team.schema';
-import { createRoundSchema } from '../models/zod/round.schema';
-import { createPanelSchema, addPanelMemberSchema, addPanelTeamsSchema } from '../models/zod/panel.schema';
-import { createCriteriaSchema, updateCriteriaSchema } from '../models/zod/criteria.schema';
-import { adminUpdateScoreSchema } from '../models/zod/score.schema';
-import { submissionLockSchema } from '../models/zod/submission.schema';
-import { createTimelineSchema, updateTimelineSchema } from '../models/zod/timeline.schema';
+import { createUserSchema, updateUserSchema } from '../models/zod/user.schema.js';
+import { createTeamSchema, updateTeamSchema, setTopTeamsSchema, updateParticipantSchema } from '../models/zod/team.schema.js';
+import { createRoundSchema } from '../models/zod/round.schema.js';
+import { createPanelSchema, addPanelMemberSchema, addPanelTeamsSchema } from '../models/zod/panel.schema.js';
+import { createCriteriaSchema, updateCriteriaSchema } from '../models/zod/criteria.schema.js';
+import { adminUpdateScoreSchema } from '../models/zod/score.schema.js';
+import { submissionLockSchema } from '../models/zod/submission.schema.js';
+import { createTimelineSchema, updateTimelineSchema } from '../models/zod/timeline.schema.js';
 
 // Controllers
-import * as users from '../controllers/admin/users.controller';
-import * as teams from '../controllers/admin/teams.controller';
-import * as rounds from '../controllers/admin/rounds.controller';
-import * as panels from '../controllers/admin/panels.controller';
-import * as criteria from '../controllers/admin/criteria.controller';
-import * as scores from '../controllers/admin/scores.controller';
-import * as results from '../controllers/admin/results.controller';
-import * as submissions from '../controllers/admin/submissions.controller';
-import * as timeline from '../controllers/admin/timeline.controller';
+import * as users from '../controllers/admin/users.controller.js';
+import * as teams from '../controllers/admin/teams.controller.js';
+import * as rounds from '../controllers/admin/rounds.controller.js';
+import * as panels from '../controllers/admin/panels.controller.js';
+import * as criteria from '../controllers/admin/criteria.controller.js';
+import * as scores from '../controllers/admin/scores.controller.js';
+import * as results from '../controllers/admin/results.controller.js';
+import * as submissions from '../controllers/admin/submissions.controller.js';
+import * as timeline from '../controllers/admin/timeline.controller.js';
 
 const router = Router();
 

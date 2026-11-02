@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
-import { prisma } from '../../services/prisma.service';
-import { AppError } from '../../middleware/error.middleware';
-import type { CreateCriteriaInput, UpdateCriteriaInput } from '../../models/zod/criteria.schema';
+import { prisma } from '../../services/prisma.service.js';
+import { AppError } from '../../middleware/error.middleware.js';
+import type { CreateCriteriaInput, UpdateCriteriaInput } from '../../models/zod/criteria.schema.js';
 
 // GET /admin/rounds/:roundId/criteria
 export async function listCriteria(req: Request, res: Response, next: NextFunction): Promise<void> {
